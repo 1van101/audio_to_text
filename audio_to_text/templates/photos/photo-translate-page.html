@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Translate Image</title>
+</head>
+<body>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Translate</button>
+</form>
+
+<img src="{{ photo.photo.url }}" alt="">
+    <h1>Translate Image</h1>
+    {{ original_content }}
+<p>---------------------------------------------</p>
+{{ translated_content }}
+</body>
+</html>

@@ -1,0 +1,62 @@
+{% load static %}
+{#{% load custom_filters %}#}
+
+<nav class="navbar">
+    <div class="container-nav">
+        <ul class="nav-group">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_staff %}
+                    <li class="nav-item">
+                        <a href="#">
+                            <i>Admin</i>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a href="#">
+                        <i>Home</i>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a href="#">
+                        <i>Profile</i>
+                    </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="#">
+                        <i>Upload photo</i>
+                    </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="#">
+                        <i>Upload audio</i>
+                    </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="{% url 'profile_logout' %}">
+                        <i>Logout</i>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+
+                    <a href="{% url 'profile_login' %}">
+                        <i>Login</i>
+                    </a>
+                </li>
+                <li class="nav-item">
+
+                    <a href="{% url 'profile_register' %}">
+                        <i>Register</i>
+                    </a>
+                </li>
+                {% endif %}
+        </ul>
+    </div>
+</nav>
