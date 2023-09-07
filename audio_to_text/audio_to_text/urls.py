@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('audio_to_text.common.urls')),
     path('accounts/', include('audio_to_text.accounts.urls')),
-    path('audios/', include('audio_to_text.audio.urls')),
+    path('audios/', include('audio_to_text.audios.urls')),
     path('photos/', include('audio_to_text.photos.urls')),
 ]
 
