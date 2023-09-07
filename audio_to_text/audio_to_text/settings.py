@@ -1,15 +1,16 @@
 from pathlib import Path
-
+import os
 from django.urls import reverse_lazy
 from dotenv import load_dotenv
-import os
 
-load_dotenv()
-
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -25,11 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'audio_to_text.accounts.apps.AccountsConfig',
-    'audio_to_text.common',
-    'audio_to_text.audio',
-    'audio_to_text.photos'
+    'celery',
+    'django_celery_results',
 
+    'audio_to_text.accounts',
+    'audio_to_text.common',
+    'audio_to_text.photos',
+    'audio_to_text.audios',
 ]
 
 MIDDLEWARE = [
@@ -47,8 +50,7 @@ ROOT_URLCONF = 'audio_to_text.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,16 +67,16 @@ WSGI_APPLICATION = 'audio_to_text.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DATABASE_NAME'),
-        "USER": os.environ.get('DATABASE_USER'),
-        "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Password validation
+# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,18 +101,32 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTH_USER_MODEL = 'accounts.AppUser'
 
-WIT_ACCESS_TOKEN = os.environ.get('WIT_ACCESS_TOKEN')
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 LOGIN_REDIRECT_URL = reverse_lazy('index')
+
+
+# Windows command for workers - 'celery -A audio_to_text worker -l info -P threads'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TIMEZONE = 'Europe/Sofia'
