@@ -1,7 +1,6 @@
-from PIL import Image
-from googletrans import Translator
-from pytesseract import pytesseract
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from . import helpers
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
@@ -14,7 +13,7 @@ from audio_to_text.photos.models import Photo
 UserModel = get_user_model()
 
 
-class PhotoAddView(views.FormView):
+class PhotoAddView(LoginRequiredMixin, views.CreateView):
     template_name = 'photos/photo-add-page.html'
     model = Photo
     form_class = PhotoAddForm
@@ -27,25 +26,17 @@ class PhotoAddView(views.FormView):
 
         photo.user = user_instance
 
-        uploaded_photo = form.cleaned_data['photo']
-        extracted_text = self.extract_text(form, uploaded_photo)
+        uploaded_photo = form.cleaned_data['photo_file']
+        selected_lang = form.cleaned_data.get('language')
+        extracted_text = helpers.extract_text(selected_lang, uploaded_photo)
         photo.extracted_text = extracted_text
 
         photo.save()
 
         return super().form_valid(form)
 
-    @staticmethod
-    def extract_text(form, uploaded_photo):
-        img = Image.open(uploaded_photo)
 
-        pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
-        selected_lang = form.cleaned_data.get('language')
-        return pytesseract.image_to_string(img, lang=selected_lang)
-
-
-class PhotoTranslateView(views.FormView):
+class PhotoTranslateView(LoginRequiredMixin, views.FormView):
     template_name = 'photos/photo-translate-page.html'
     model = Photo
     form_class = PhotoTranslateLanguageForm
@@ -63,12 +54,7 @@ class PhotoTranslateView(views.FormView):
         original_content = photo.extracted_text
         selected_lang = form.cleaned_data['selected_language']
 
-        translator = Translator()
-        try:
-            translated_content = translator.translate(original_content, dest=selected_lang)
-            translated_text = translated_content.text
-        except Exception as e:
-            translated_text = f"Translation Error: {str(e)}"
+        translated_text = helpers.translate_text(original_content, selected_lang)
 
         context = {
             'original_content': original_content,
@@ -76,11 +62,6 @@ class PhotoTranslateView(views.FormView):
             'lang': supported_languages.supported_languages,
             'form': form,
             'photo': photo
-
         }
 
         return self.render_to_response(context)
-
-
-class PhotoDetailsView(views.DetailView):
-    pass

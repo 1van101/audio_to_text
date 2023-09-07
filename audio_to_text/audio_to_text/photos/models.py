@@ -36,7 +36,8 @@ class Photo(models.Model):
     )
 
     language = models.CharField(
-        choices=CHOICES
+        choices=CHOICES,
+        max_length=max([len(x[1]) for x in CHOICES])
     )
 
     user = models.ForeignKey(
