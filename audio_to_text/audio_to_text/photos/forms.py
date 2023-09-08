@@ -1,5 +1,5 @@
 from django import forms
-from . import supported_languages
+from utils import supported_languages
 from audio_to_text.photos.models import Photo
 
 

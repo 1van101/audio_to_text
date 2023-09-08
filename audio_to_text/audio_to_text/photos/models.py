@@ -44,3 +44,16 @@ class Photo(models.Model):
         UserModel,
         on_delete=models.CASCADE
     )
+
+    word_document = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    @staticmethod
+    def unique_filename(_, filename):
+        name, ext = filename.split('.')
+        filename = f'{datetime.datetime.now().strftime("%Y-%m-%d")}-{name}.{ext}'
+
+        return f'photos/{filename}'
