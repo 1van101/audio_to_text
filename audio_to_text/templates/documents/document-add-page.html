@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF</title>
+</head>
+<body>
+<h1>PDF</h1>
+<form method='post' action="{% url 'document_add' %}" enctype="multipart/form-data">
+    {{ form }}
+
+
+    {% csrf_token %}
+
+    <button type="submit">Upload</button>
+
+
+</form>
+
+</body>
+</html>

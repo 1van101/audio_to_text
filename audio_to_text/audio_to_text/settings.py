@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'audio_to_text.common',
     'audio_to_text.photos',
     'audio_to_text.audios',
+    'audio_to_text.documents',
 ]
 
 MIDDLEWARE = [
@@ -108,7 +109,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'accounts.AppUser'
 
@@ -120,10 +121,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = reverse_lazy('index')
 LOGIN_REDIRECT_URL = reverse_lazy('index')
 
-
 # Windows command for workers - 'celery -A audio_to_text worker -l info -P threads'
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-
 
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'

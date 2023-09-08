@@ -16,5 +16,8 @@
     {{ original_content }}
 <p>---------------------------------------------</p>
 {{ translated_content }}
+
+<div><a href="{% url 'photo_download' photo.id %}">Download Word Document Original Text</a>
+</div>
 </body>
 </html>

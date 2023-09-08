@@ -15,3 +15,11 @@ services:
       - redis
     depends_on:
       - redis
+#  app:
+#    build: .
+#    image: ocr_app:latest
+#    depends_on:
+#      - tesseract
+#  tesseract:
+#    image: tesseractshadow/tesseract4re
+#    container_name: t4re

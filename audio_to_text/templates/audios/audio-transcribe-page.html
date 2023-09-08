@@ -8,6 +8,8 @@
     <h1>TEXT</h1>
     <p>{{ audio.extracted_text }}</p>
     {{ result.status }}
-<p>{{ res }}</p>
+<a href="{% url 'audio_download' audio.id %}">Download Word Document Original Text</a>
+
+
 </body>
 </html>

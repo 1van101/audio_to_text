@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Translate PDF</title>
+</head>
+<body>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Translate</button>
+</form>
+
+    <h1>Translate PDF</h1>
+    {{ original_content }}
+<p>---------------------------------------------</p>
+{{ translated_content }}
+
+<a href="{% url 'document_download' document.id %}">Download Word Document Original Text</a>
+
+</body>
+</html>
