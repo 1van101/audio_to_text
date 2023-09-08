@@ -41,3 +41,6 @@ class Audio(models.Model):
         max_length=55
     )
 
+    word_document = models.CharField(max_length=255, blank=True, null=True)
+
+
