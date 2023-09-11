@@ -25,4 +25,17 @@ class UserRegisterForm(auth_forms.UserCreationForm):
 
 
 class LoginForm(auth_forms.AuthenticationForm):
-    pass
+    error_messages = {
+        'invalid_login': 'Please enter a correct email and password!',
+    }
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'profile_picture']
+
+        labels = {
+            'username': 'Username',
+            'profile_picture': 'Profile Picture'
+        }
