@@ -1,4 +1,6 @@
 from django.contrib.auth import get_user_model, login
+from django.contrib import messages
+from django.shortcuts import redirect
 
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -50,3 +52,9 @@ class UserDeleteView(views.DeleteView):
     model = UserModel
     template_name = 'accounts/user-delete-page.html'
     success_url = reverse_lazy('index')
+
+
+def signup_redirect(request):
+    messages.error(
+        request, "Something wrong here, it may be that you already have account!")
+    return redirect('profile_login')

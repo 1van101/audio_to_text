@@ -47,6 +47,7 @@ class UserProfile(models.Model):
                                        message='Ensure username has at least 2 characters (it has 1).')]
     )
 
+
     profile_picture = models.ImageField(
         upload_to='profile_img/',
         null=True,

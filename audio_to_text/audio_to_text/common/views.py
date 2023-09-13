@@ -9,3 +9,5 @@ UserModel = get_user_model()
 class IndexView(views.TemplateView):
     template_name = 'common/index.html'
     user = UserModel
+
+
