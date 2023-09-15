@@ -14,11 +14,14 @@ class UserRegisterForm(auth_forms.UserCreationForm):
             'password': forms.PasswordInput()
         }
 
+
+
     def save(self, commit=True):
         user = super().save(commit=commit)
         profile = UserProfile(
             user=user,
         )
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
         if commit:
             profile.save()
         return user
